@@ -1,0 +1,50 @@
+# Supreme Court ASR – Python dependencies
+# Install: pip install -r requirements.txt
+#
+# NeMo requires a matching CUDA/PyTorch combination.
+# Recommended: CUDA 12.1 + PyTorch 2.2
+#   pip install torch==2.2.* --extra-index-url https://download.pytorch.org/whl/cu121
+#   pip install nemo_toolkit[asr]==1.23
+#
+# Then install the rest:
+#   pip install -r requirements.txt
+
+# ── Data access ──────────────────────────────────────────────────────────────
+requests>=2.31          # HTTP downloads (Dropbox MP3, Google Drive PDF, Google Sheet xlsx)
+openpyxl>=3.1           # xlsx parsing to extract Google Drive hyperlinks from col 7
+pypdf>=4.0              # TERES PDF parsing
+
+# ── Audio processing ─────────────────────────────────────────────────────────
+soundfile>=0.12         # WAV read/write
+librosa>=0.10           # Resampling helpers (optional but useful)
+pydub>=0.25             # Backup MP3 handling (needs ffmpeg binary)
+
+# ── Alignment ─────────────────────────────────────────────────────────────────
+# Install whisperx from source for latest fixes:
+#   pip install git+https://github.com/m-bain/whisperX.git
+whisperx>=3.1
+
+# ── Text matching ─────────────────────────────────────────────────────────────
+rapidfuzz>=3.6
+
+# ── Training – shared ────────────────────────────────────────────────────────
+torch>=2.2
+pytorch-lightning>=2.2  # used by NeMo's training loop
+
+# ── Training – NeMo (Step 5 primary) ─────────────────────────────────────────
+# Install NeMo separately before this file (see header note):
+#   pip install nemo_toolkit[asr]==1.23
+nemo_toolkit[asr]>=1.21
+omegaconf>=2.3          # NeMo uses OmegaConf structured configs
+
+# ── Training – Whisper LoRA (Step 5 alternative) ──────────────────────────────
+transformers>=4.40
+peft>=0.10              # LoRA adapters for Whisper
+accelerate>=0.29        # HuggingFace Accelerate (used by Seq2SeqTrainer)
+evaluate>=0.4           # HuggingFace evaluate (WER during Whisper training)
+
+# ── Evaluation ────────────────────────────────────────────────────────────────
+jiwer>=3.0              # WER / CER / MER / WIL
+
+# ── Utilities ─────────────────────────────────────────────────────────────────
+tqdm>=4.66
